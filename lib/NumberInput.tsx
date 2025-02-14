@@ -1,4 +1,11 @@
-import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react'
 import { formatNumber } from './helper'
 import { NumberInputProps } from './types'
 
@@ -16,11 +23,17 @@ export const NumberInput = forwardRef(function NumberInput(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const integer = Math.trunc(max).toString().length
-  const placeholder = formatNumber('0', integer, decimals)
-  const pattern =
-    decimals > 0
-      ? new RegExp(`^\\d{0,${integer}}([\\.,]\\d{0,${decimals}})?$`)
-      : new RegExp(`^\\d{0,${integer}}$`)
+  const placeholder = useMemo(
+    () => formatNumber('0', integer, decimals),
+    [integer, decimals]
+  )
+  const pattern = useMemo(
+    () =>
+      decimals > 0
+        ? new RegExp(`^\\d{0,${integer}}([\\.,]\\d{0,${decimals}})?$`)
+        : new RegExp(`^\\d{0,${integer}}$`),
+    [integer, decimals]
+  )
   const spanRef = useRef<HTMLSpanElement>(null)
   const [width, setWidth] = useState('auto')
 

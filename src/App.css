@@ -39,6 +39,12 @@
   font-size: 0.9rem;
 }
 
+.helper {
+  color: #6c6c6c;
+  font-size: 0.8rem;
+  padding-left: 10px;
+}
+
 /* Checkbox & Label - inline */
 .checkbox-container {
   display: flex;

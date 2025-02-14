@@ -38,6 +38,7 @@ function App() {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleInputConfirm()}
           />
+          <span className="helper">Press enter to commit the value</span>
         </div>
         <div>
           <label htmlFor="type">Type</label>
