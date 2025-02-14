@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.left {
+  width: 260px;
+  background-color: #f4f4f4;
+  padding: 16px;
+  border-right: 2px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.left div {
+  margin-bottom: 20px;
+}
+
+/* Ensure all input and select elements fit within .left */
+.left input,
+.left select {
+  width: 100%;
+  padding: 6px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  box-sizing: border-box; /* Prevents overflow */
+}
+
+/* Labels */
+.left label {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* Checkbox & Label - inline */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-container input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  margin: 0; /* Remove extra spacing */
+}
+
+.right {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #fff;
+}
