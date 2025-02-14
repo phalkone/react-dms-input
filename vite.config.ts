@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
   const isDemoBuild = mode === 'demo'
 
   return {
-    plugins: [react(), dts({ rollupTypes: true })],
+    plugins: [react(), !isDemoBuild && dts({ rollupTypes: true })],
     test: {
       globals: true,
       environment: 'jsdom',
