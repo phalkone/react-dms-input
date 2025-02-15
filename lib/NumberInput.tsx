@@ -6,7 +6,7 @@ import {
   useRef,
   useState
 } from 'react'
-import { formatNumber } from './helper'
+import { escapeForRegex, formatNumber, getDecimalSeparator } from './helper'
 import { NumberInputProps } from './types'
 
 export const NumberInput = forwardRef(function NumberInput(
@@ -16,6 +16,7 @@ export const NumberInput = forwardRef(function NumberInput(
     min = 0,
     max,
     decimals = 2,
+    locale,
     nextFocus,
     previousFocus,
     ...otherProps
@@ -24,15 +25,19 @@ export const NumberInput = forwardRef(function NumberInput(
 ) {
   const integer = Math.trunc(max).toString().length
   const placeholder = useMemo(
-    () => formatNumber('0', integer, decimals),
-    [integer, decimals]
+    () => formatNumber('0', integer, decimals, locale),
+    [integer, decimals, locale]
+  )
+  const separator = useMemo(
+    () => escapeForRegex(getDecimalSeparator(locale)),
+    [locale]
   )
   const pattern = useMemo(
     () =>
       decimals > 0
-        ? new RegExp(`^\\d{0,${integer}}([\\.,]\\d{0,${decimals}})?$`)
+        ? new RegExp(`^\\d{0,${integer}}(${separator}\\d{0,${decimals}})?$`)
         : new RegExp(`^\\d{0,${integer}}$`),
-    [integer, decimals]
+    [integer, decimals, separator]
   )
   const spanRef = useRef<HTMLSpanElement>(null)
   const [width, setWidth] = useState('auto')
@@ -59,7 +64,7 @@ export const NumberInput = forwardRef(function NumberInput(
   }
 
   const blurDegrees = () => {
-    if (value) setValue((val) => formatNumber(val, integer, decimals))
+    if (value) setValue((val) => formatNumber(val, integer, decimals, locale))
   }
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {

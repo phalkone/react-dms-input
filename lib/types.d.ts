@@ -2,6 +2,7 @@ export interface DMSInputProps {
   type: 'lat' | 'long'
   seconds?: boolean
   minutesDecimals?: 0 | 1 | 2 | 3
+  locale?: string
   value?: number
   onChange?: (val: number | undefined) => void
   nextFocus?: HTMLInputElement | HTMLSelectElement | null
@@ -14,6 +15,7 @@ export interface NumberInputProps
   min?: number
   max: number
   decimals: 0 | 1 | 2 | 3
+  locale?: string
   nextFocus?: HTMLInputElement | HTMLSelectElement | null
   previousFocus?: HTMLInputElement | HTMLSelectElement | null
 }

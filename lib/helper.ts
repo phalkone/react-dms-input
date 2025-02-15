@@ -20,13 +20,56 @@ export const getMaxMinutes = (decimals: 0 | 1 | 2 | 3) => {
   return parseFloat(`59.${'9'.repeat(decimals)}`) || 59
 }
 
+export const escapeForRegex = (char: string) => {
+  const specialChars = [
+    '.',
+    '^',
+    '$',
+    '*',
+    '+',
+    '?',
+    '(',
+    ')',
+    '[',
+    ']',
+    '{',
+    '}',
+    '|',
+    '\\'
+  ]
+  return specialChars.includes(char) ? `\\${char}` : char
+}
+
+export const sanitizeNumber = (str: string) => {
+  const match = str.match(/(\d+).?(\d+)?/)
+  if (!match) return 0
+  return parseFloat(match[1] + '.' + (match[2] || '0'))
+}
+
 export const formatNumber = (
   str: string,
   integer: number,
-  decimals: number
+  decimals: number,
+  locale?: string
 ) => {
-  const num = parseFloat(str) || 0
-  const [int, decimal] = num.toFixed(decimals).split('.')
-  if (String(int).length > integer) throw new Error('Integer part too long')
-  return `${int.padStart(integer, '0')}${decimal ? '.' + decimal : ''}`
+  const format = Intl.NumberFormat(locale, {
+    style: 'decimal',
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+    minimumIntegerDigits: integer,
+    useGrouping: false,
+    numberingSystem: 'latn'
+  })
+
+  const num = sanitizeNumber(str)
+  if (Math.abs(Math.trunc(num)).toString().length > integer)
+    throw new Error('Integer part too long')
+  return format.format(num)
+}
+
+export const getDecimalSeparator = (locale?: string) => {
+  const formatter = new Intl.NumberFormat(locale)
+  const parts = formatter.formatToParts(1.1)
+  const decimalPart = parts.find((part) => part.type === 'decimal')
+  return decimalPart ? decimalPart.value : '.'
 }

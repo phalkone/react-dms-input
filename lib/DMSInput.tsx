@@ -9,7 +9,13 @@ import {
 import { SignInput } from './SignInput'
 import { NumberInput } from './NumberInput'
 import './DMSInput.css'
-import { formatNumber, getDegreesMinutesSeconds, getMaxMinutes } from './helper'
+import {
+  formatNumber,
+  getDecimalSeparator,
+  getDegreesMinutesSeconds,
+  getMaxMinutes,
+  sanitizeNumber
+} from './helper'
 import { DMSInputProps } from './types'
 
 const DMSInput = forwardRef(function DMSInput(
@@ -18,11 +24,13 @@ const DMSInput = forwardRef(function DMSInput(
     value,
     seconds = false,
     minutesDecimals = 1,
+    locale,
     onChange,
     nextFocus
   }: DMSInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
+  const separator = useMemo(() => getDecimalSeparator(locale), [locale])
   const [degrees, minutes, sec] = useMemo(
     () =>
       value !== undefined
@@ -31,15 +39,22 @@ const DMSInput = forwardRef(function DMSInput(
     [value, minutesDecimals, seconds]
   )
   const [coordinateDegrees, setCoordinateDegrees] = useState<string>(
-    value ? formatNumber(degrees.toString(), type === 'lat' ? 2 : 3, 0) : ''
+    value
+      ? formatNumber(degrees.toString(), type === 'lat' ? 2 : 3, 0, locale)
+      : ''
   )
   const [coordinateMinutes, setCoordinateMinutes] = useState<string>(
     value
-      ? formatNumber(minutes.toString(), 2, seconds ? 0 : minutesDecimals)
+      ? formatNumber(
+          minutes.toString(),
+          2,
+          seconds ? 0 : minutesDecimals,
+          locale
+        )
       : ''
   )
   const [coordinateSeconds, setCoordinateSeconds] = useState<string>(
-    seconds && value ? formatNumber(sec.toString(), 2, 0) : ''
+    seconds && value ? formatNumber(sec.toString(), 2, 0, locale) : ''
   )
   const [coordinateSign, setCoordinateSign] = useState<string>(
     value && value < 0
@@ -67,9 +82,9 @@ const DMSInput = forwardRef(function DMSInput(
       const sign = coordinateSign === 'S' || coordinateSign === 'W' ? -1 : 1
       const newValue =
         sign *
-        (Number(coordinateDegrees) +
-          Number(coordinateMinutes) / 60 +
-          Number(coordinateSeconds) / 3600)
+        (sanitizeNumber(coordinateDegrees) +
+          sanitizeNumber(coordinateMinutes) / 60 +
+          sanitizeNumber(coordinateSeconds) / 3600)
 
       if (onChange) onChange(newValue)
     }
@@ -79,7 +94,8 @@ const DMSInput = forwardRef(function DMSInput(
     coordinateSeconds,
     coordinateSign,
     onChange,
-    seconds
+    seconds,
+    separator
   ])
 
   useEffect(() => {
@@ -97,17 +113,17 @@ const DMSInput = forwardRef(function DMSInput(
         seconds
       )
       setCoordinateDegrees(
-        formatNumber(deg.toString(), type === 'lat' ? 2 : 3, 0)
+        formatNumber(deg.toString(), type === 'lat' ? 2 : 3, 0, locale)
       )
       setCoordinateMinutes(
-        formatNumber(min.toString(), 2, seconds ? 0 : minutesDecimals)
+        formatNumber(min.toString(), 2, seconds ? 0 : minutesDecimals, locale)
       )
-      setCoordinateSeconds(formatNumber(sec.toString(), 2, 0))
+      setCoordinateSeconds(formatNumber(sec.toString(), 2, 0, locale))
       setCoordinateSign(
         value < 0 ? (type === 'lat' ? 'S' : 'W') : type === 'lat' ? 'N' : 'E'
       )
     }
-  }, [value, type, minutesDecimals, seconds])
+  }, [value, type, minutesDecimals, seconds, locale])
 
   return (
     <div className="DMSInput">
@@ -128,6 +144,7 @@ const DMSInput = forwardRef(function DMSInput(
           max={seconds ? 59 : getMaxMinutes(minutesDecimals)}
           decimals={seconds ? 0 : minutesDecimals}
           setValue={setCoordinateMinutes}
+          locale={locale}
           nextFocus={seconds ? secondsRef.current : signRef.current}
           previousFocus={
             ref && typeof ref === 'object' && 'current' in ref
@@ -145,6 +162,7 @@ const DMSInput = forwardRef(function DMSInput(
             max={59}
             decimals={0}
             setValue={setCoordinateSeconds}
+            locale={locale}
             nextFocus={signRef.current}
             ref={secondsRef}
           />

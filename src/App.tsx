@@ -6,6 +6,7 @@ function App() {
   const [type, setType] = useState<'lat' | 'long'>('lat')
   const [seconds, setSeconds] = useState(false)
   const [value, setValue] = useState<number | undefined>(undefined)
+  const [locale, setLocale] = useState<string>('en-US')
   const [decimals, setDecimals] = useState<0 | 1 | 2 | 3>(1)
   const [inputValue, setInputValue] = useState<string>('')
 
@@ -52,6 +53,18 @@ function App() {
             <option value="long">Longitude</option>
           </select>
         </div>
+        <div>
+          <label htmlFor="locale">Locale</label>
+          <select
+            id="locale"
+            name="locale"
+            value={locale}
+            onChange={(e) => setLocale(e.target.value)}
+          >
+            <option value="en-US">en-US</option>
+            <option value="nl-BE">nl-BE</option>
+          </select>
+        </div>
         <div className="checkbox-container">
           <input
             id="seconds"
@@ -86,6 +99,7 @@ function App() {
           type={type}
           value={value}
           seconds={seconds}
+          locale={locale}
           minutesDecimals={decimals}
           onChange={setValue}
         />

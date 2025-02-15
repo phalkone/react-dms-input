@@ -1,7 +1,7 @@
 import {
-  formatNumber,
   getDegreesMinutesSeconds,
-  getMaxMinutes
+  getMaxMinutes,
+  formatNumber
 } from '../helper'
 
 describe('helper', () => {

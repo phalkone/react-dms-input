@@ -1,6 +1,9 @@
 {
   "name": "react-dms-input",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "license":"MIT",
+  "homepage": "https://phalkone.github.io/react-dms-input/)",
+  "repository": {"url": "https://github.com/phalkone/react-dms-input"},
   "type": "module",
   "files": [
     "dist"
@@ -32,14 +35,14 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/node": "^22.13.1",
+    "@types/node": "^22.13.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.20.1",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.14.0",
+    "globals": "^15.15.0",
     "jsdom": "^26.0.0",
     "typescript": "~5.7.3",
     "typescript-eslint": "^8.24.0",

@@ -1,50 +1,54 @@
-# React + TypeScript + Vite
+# React DMS input
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## General
 
-Currently, two official plugins are available:
+React component for Degrees, Minutes and Seconds (DMS) coordinates input. Mainly focussed on the maritime industry.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+yarn add react-dms-input
+npm install react-dms-input --save
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Demo
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+[https://phalkone.github.io/react-dms-input/](https://phalkone.github.io/react-dms-input/)
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## Basic usage
+
+```javascript
+import React, { useState } from 'react'
+import DMSInput from 'react-dms-input'
+
+function App() {
+  const [num, setNum] = useState(0)
+
+  return (
+    <DMSInput
+      type="lat" // Required property
+      value={num}
+      locale={'en-US'}
+      minutesDecimals={1}
+      onChange={setNum}
+    />
+  )
+}
 ```
+
+## Properties
+
+| Property        | Type                                  | Default     | Description                                                          |
+| --------------- | ------------------------------------- | ----------- | -------------------------------------------------------------------- |
+| type            | 'lat' \| 'long'                       |             | Latitude or longitude input.                                         |
+| seconds         | boolean                               | false       | Display seconds input.                                               |
+| minutesDecimals | [0-3]                                 | 1           | Fraction digits of minutes input. Ignored if seconds is true.        |
+| locale          | string                                | host locale | Locale of input. Affects the decimal separator of the minutes.       |
+| value           | number                                |             | Value in degrees.                                                    |
+| onnChange       | (val: number \| undefined) => void    |             | Called when the degrees value changes.                               |
+| nextFocus       | HTMLInputElement \| HTMLSelectElement |             | UI element to focus on once the sign once the sign has been entered. |
+| ref             | React.RefObject                       |             | Reference to the input component                                     |
+
+## License
+
+MIT
