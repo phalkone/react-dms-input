@@ -6,7 +6,7 @@ function App() {
   const [type, setType] = useState<'lat' | 'long'>('lat')
   const [seconds, setSeconds] = useState(false)
   const [value, setValue] = useState<number | undefined>(undefined)
-  const [locale, setLocale] = useState<string>('en-US')
+  const [locale, setLocale] = useState<string | undefined>('en-US')
   const [decimals, setDecimals] = useState<0 | 1 | 2 | 3>(1)
   const [inputValue, setInputValue] = useState<string>('')
 
@@ -59,8 +59,13 @@ function App() {
             id="locale"
             name="locale"
             value={locale}
-            onChange={(e) => setLocale(e.target.value)}
+            onChange={(e) =>
+              setLocale(
+                e.target.value === 'default' ? undefined : e.target.value
+              )
+            }
           >
+            <option value="default">default</option>
             <option value="en-US">en-US</option>
             <option value="nl-BE">nl-BE</option>
           </select>

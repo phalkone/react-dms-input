@@ -8,14 +8,12 @@
   margin-bottom: 10px;
 }
 
-/* Wrap inputs and attach symbols */
 .DMSInput .input-wrapper {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-/* Input styles */
 .DMSInput input,
 .DMSInput select {
   height: 2rem;
@@ -29,14 +27,12 @@
   padding: 0.3rem 1rem;
 }
 
-/* Symbols positioned correctly */
 .DMSInput .input-wrapper span {
   font-size: 1rem;
   color: #666;
   margin-left: 2px;
 }
 
-/* Select dropdown adjustments */
 .DMSInput select {
   width: 4rem;
   background-color: white;
@@ -44,13 +40,11 @@
   text-align: center;
 }
 
-/* Hover & Focus Effects */
 .DMSInput select:focus,
 .DMSInput input:focus {
   background-color: #eef6ff;
 }
 
-/* Rounded corners */
 .degrees-wrapper input {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
