@@ -11,7 +11,6 @@ function App() {
   const [inputValue, setInputValue] = useState<string>('')
 
   useEffect(() => {
-    console.log(value)
     if (value != undefined && !isNaN(value)) {
       setInputValue(String(value))
     } else {

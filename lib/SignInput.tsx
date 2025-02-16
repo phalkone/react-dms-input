@@ -1,8 +1,15 @@
 import { ForwardedRef, forwardRef, useCallback } from 'react'
-import { SignInputProps } from './types'
+
+export interface SignInputProps
+  extends React.SelectHTMLAttributes<HTMLSelectElement> {
+  options: ['N', 'S'] | ['E', 'W']
+  value?: string
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  nextFocus?: HTMLInputElement | HTMLSelectElement | null
+}
 
 export const SignInput = forwardRef(function SignInput(
-  { options, value, setValue, nextFocus }: SignInputProps,
+  { options, value, setValue, nextFocus, ...otherProps }: SignInputProps,
   ref: ForwardedRef<HTMLSelectElement>
 ) {
   const handleSignChange = useCallback(
@@ -14,7 +21,7 @@ export const SignInput = forwardRef(function SignInput(
   )
 
   return (
-    <select ref={ref} value={value} onChange={handleSignChange}>
+    <select ref={ref} value={value} onChange={handleSignChange} {...otherProps}>
       {options.map((option) => (
         <option value={option} key={option}>
           {option}

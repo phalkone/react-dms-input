@@ -7,7 +7,18 @@ import {
   useState
 } from 'react'
 import { escapeForRegex, formatNumber, getDecimalSeparator } from './helper'
-import { NumberInputProps } from './types'
+
+export interface NumberInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  value: string
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  min?: number
+  max: number
+  decimals: 0 | 1 | 2 | 3
+  locale?: string
+  nextFocus?: HTMLInputElement | HTMLSelectElement | null
+  previousFocus?: HTMLInputElement | HTMLSelectElement | null
+}
 
 export const NumberInput = forwardRef(function NumberInput(
   {

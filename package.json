@@ -1,12 +1,15 @@
 {
   "name": "react-dms-input",
   "version": "0.0.1",
-  "license":"MIT",
+  "license": "MIT",
   "homepage": "https://phalkone.github.io/react-dms-input/)",
-  "repository": {"url": "https://github.com/phalkone/react-dms-input"},
+  "repository": {
+    "url": "https://github.com/phalkone/react-dms-input"
+  },
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "lib"
   ],
   "types": "./dist/react-dms-input.d.ts",
   "main": "./dist/react-dms-input.umd.cjs",

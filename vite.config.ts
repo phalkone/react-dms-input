@@ -12,7 +12,16 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: isDemoBuild ? './' : '/',
-    plugins: [react(), !isDemoBuild && dts({ rollupTypes: true })],
+    plugins: [
+      react(),
+      !isDemoBuild &&
+        dts({
+          rollupTypes: true,
+          tsconfigPath: './tsconfig.app.json',
+          outDir: 'dist',
+          entryRoot: 'lib'
+        })
+    ],
     test: {
       globals: true,
       environment: 'jsdom',

@@ -16,7 +16,16 @@ import {
   getMaxMinutes,
   sanitizeNumber
 } from './helper'
-import { DMSInputProps } from './types'
+
+export interface DMSInputProps {
+  type: 'lat' | 'long'
+  seconds?: boolean
+  minutesDecimals?: 0 | 1 | 2 | 3
+  locale?: string
+  value?: number
+  onChange?: (val: number | undefined) => void
+  nextFocus?: HTMLInputElement | HTMLSelectElement | null
+}
 
 const DMSInput = forwardRef(function DMSInput(
   {
@@ -80,11 +89,31 @@ const DMSInput = forwardRef(function DMSInput(
       if (onChange) onChange(undefined)
     } else {
       const sign = coordinateSign === 'S' || coordinateSign === 'W' ? -1 : 1
-      const newValue =
+      let newValue =
         sign *
         (sanitizeNumber(coordinateDegrees) +
           sanitizeNumber(coordinateMinutes) / 60 +
           sanitizeNumber(coordinateSeconds) / 3600)
+
+      const maxAllowed = type === 'lat' ? 90 : 180
+
+      if (Math.abs(newValue) > maxAllowed) {
+        newValue = sign * maxAllowed
+        const [newDeg, newMin, newSec] = getDegreesMinutesSeconds(
+          newValue,
+          minutesDecimals,
+          seconds
+        )
+        setCoordinateDegrees(
+          formatNumber(newDeg.toString(), type === 'lat' ? 2 : 3, 0)
+        )
+        setCoordinateMinutes(
+          formatNumber(newMin.toString(), 2, seconds ? 0 : minutesDecimals)
+        )
+        if (seconds) {
+          setCoordinateSeconds(formatNumber(newSec.toString(), 2, 0))
+        }
+      }
 
       if (onChange) onChange(newValue)
     }
@@ -93,9 +122,11 @@ const DMSInput = forwardRef(function DMSInput(
     coordinateMinutes,
     coordinateSeconds,
     coordinateSign,
+    minutesDecimals,
     onChange,
     seconds,
-    separator
+    separator,
+    type
   ])
 
   useEffect(() => {
