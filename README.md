@@ -18,6 +18,7 @@ npm install react-dms-input --save
 ```javascript
 import React, { useState } from 'react'
 import DMSInput from 'react-dms-input'
+import "react-dms-input/style.css"
 
 function App() {
   const [num, setNum] = useState(0)
