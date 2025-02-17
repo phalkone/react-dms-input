@@ -4,7 +4,7 @@
   "license": "MIT",
   "homepage": "https://phalkone.github.io/react-dms-input/)",
   "repository": {
-    "url": "https://github.com/phalkone/react-dms-input"
+    "url": "git+https://github.com/phalkone/react-dms-input.git"
   },
   "type": "module",
   "files": [
