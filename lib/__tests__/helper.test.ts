@@ -115,30 +115,11 @@ describe('formatNumber', () => {
     expect(formatNumber('90.56', 2, 1)).toEqual('90.6')
     expect(formatNumber('90.567', 2, 1)).toEqual('90.6')
     expect(formatNumber('90.567', 2, 4)).toEqual('90.5670')
-    expect(() => formatNumber('90.4', 1, 0)).toThrowError(
-      'Integer part too long'
-    )
-    expect(() => formatNumber('90.50', 1, 1)).toThrowError(
-      'Integer part too long'
-    )
-    expect(() => formatNumber('90.56', 1, 1)).toThrowError(
-      'Integer part too long'
-    )
-    expect(() => formatNumber('90.567', 1, 1)).toThrowError(
-      'Integer part too long'
-    )
-    expect(() => formatNumber('90.567', 1, 4)).toThrowError(
-      'Integer part too long'
-    )
-  })
-
-  it('should throw error for invalid integer part length', () => {
-    expect(() => formatNumber('1234', 3, 0)).toThrowError(
-      'Integer part too long'
-    )
-    expect(() => formatNumber('12345', 4, 0)).toThrowError(
-      'Integer part too long'
-    )
+    expect(formatNumber('90.4', 1, 0)).toEqual('90')
+    expect(formatNumber('90.50', 1, 1)).toEqual('90.5')
+    expect(formatNumber('90.56', 1, 1)).toEqual('90.6')
+    expect(formatNumber('90.567', 1, 1)).toEqual('90.6')
+    expect(formatNumber('90.567', 1, 4)).toEqual('90.5670')
   })
 
   it('should handle edge cases in formatting', () => {

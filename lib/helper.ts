@@ -62,8 +62,6 @@ export const formatNumber = (
   })
 
   const num = sanitizeNumber(str)
-  if (Math.abs(Math.trunc(num)).toString().length > integer)
-    throw new Error('Integer part too long')
   return format.format(num)
 }
 
