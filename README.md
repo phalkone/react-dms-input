@@ -1,7 +1,5 @@
 # React DMS input
 
-## General
-
 React component for Degrees, Minutes and Seconds (DMS) coordinates input. Mainly focussed on the maritime industry.
 
 ## Installation
