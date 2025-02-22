@@ -6,6 +6,21 @@
   "repository": {
     "url": "git+https://github.com/phalkone/react-dms-input.git"
   },
+  "keywords": [
+    "react",
+    "react-component",
+    "input",
+    "typescript",
+    "dms",
+    "coordinates",
+    "latitude",
+    "longitude",
+    "lat",
+    "lon",
+    "degrees",
+    "minutes",
+    "seconds"
+  ],
   "type": "module",
   "files": [
     "dist",
