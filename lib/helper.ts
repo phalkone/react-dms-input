@@ -1,6 +1,6 @@
 export const getDegreesMinutesSeconds = (
   val: number,
-  decimals: 0 | 1 | 2 | 3,
+  decimals: 0 | 1 | 2 | 3 | 4,
   sec: boolean
 ) => {
   const abs = Math.abs(val)
@@ -16,7 +16,7 @@ export const getDegreesMinutesSeconds = (
   return [degrees, minutes, seconds]
 }
 
-export const getMaxMinutes = (decimals: 0 | 1 | 2 | 3) => {
+export const getMaxMinutes = (decimals: 0 | 1 | 2 | 3 | 4) => {
   return parseFloat(`59.${'9'.repeat(decimals)}`) || 59
 }
 

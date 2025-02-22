@@ -3,11 +3,11 @@ import { DMSInput } from '../lib/main'
 import { useEffect, useState } from 'react'
 
 function App() {
+  const [mode, setMode] = useState<'D' | 'DM' | 'DMS'>('DM')
   const [type, setType] = useState<'lat' | 'long'>('lat')
-  const [seconds, setSeconds] = useState(false)
   const [value, setValue] = useState<number | undefined>(undefined)
   const [locale, setLocale] = useState<string | undefined>('en-US')
-  const [decimals, setDecimals] = useState<0 | 1 | 2 | 3>(1)
+  const [decimals, setDecimals] = useState<0 | 1 | 2 | 3 | 4>(1)
   const [inputValue, setInputValue] = useState<string>('')
 
   useEffect(() => {
@@ -41,6 +41,19 @@ function App() {
           <span className="helper">Press enter to commit the value</span>
         </div>
         <div>
+          <label htmlFor="mode">Mode</label>
+          <select
+            id="mode"
+            name="mode"
+            value={mode}
+            onChange={(e) => setMode(e.target.value as 'D' | 'DM' | 'DMS')}
+          >
+            <option value="D">Degrees (D)</option>
+            <option value="DM">Degrees-Minutes (DM)</option>
+            <option value="DMS">Degrees-Minutes-Seconds (DMS)</option>
+          </select>
+        </div>
+        <div>
           <label htmlFor="type">Type</label>
           <select
             id="type"
@@ -69,42 +82,31 @@ function App() {
             <option value="nl-BE">nl-BE</option>
           </select>
         </div>
-        <div className="checkbox-container">
-          <input
-            id="seconds"
-            type="checkbox"
-            name="seconds"
-            checked={seconds}
-            onChange={(e) => setSeconds(e.target.checked)}
-          />
-          <label htmlFor="seconds">Seconds</label>
+        <div>
+          <label htmlFor="decimals">Fraction Digits</label>
+          <select
+            id="decimals"
+            name="decimals"
+            value={decimals}
+            onChange={(e) =>
+              setDecimals(Number(e.target.value) as 0 | 1 | 2 | 3 | 4)
+            }
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
         </div>
-        {!seconds && (
-          <div>
-            <label htmlFor="decimals">Decimals of minutes</label>
-            <select
-              id="decimals"
-              name="decimals"
-              value={decimals}
-              onChange={(e) =>
-                setDecimals(Number(e.target.value) as 0 | 1 | 2 | 3)
-              }
-            >
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-        )}
       </div>
       <div className="right">
         <DMSInput
+          mode={mode}
           type={type}
           value={value}
-          seconds={seconds}
           locale={locale}
-          minutesDecimals={decimals}
+          fractionDigits={decimals}
           onChange={setValue}
         />
       </div>

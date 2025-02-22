@@ -18,9 +18,9 @@ import {
 } from './helper'
 
 export interface DMSInputProps {
+  mode?: 'DMS' | 'DM' | 'D'
   type: 'lat' | 'long'
-  seconds?: boolean
-  minutesDecimals?: 0 | 1 | 2 | 3
+  fractionDigits?: 0 | 1 | 2 | 3 | 4
   locale?: string
   value?: number
   onChange?: (val: number | undefined) => void
@@ -29,10 +29,10 @@ export interface DMSInputProps {
 
 const DMSInput = forwardRef(function DMSInput(
   {
+    mode = 'DM',
     type,
     value,
-    seconds = false,
-    minutesDecimals = 1,
+    fractionDigits = 1,
     locale,
     onChange,
     nextFocus
@@ -43,27 +43,36 @@ const DMSInput = forwardRef(function DMSInput(
   const [degrees, minutes, sec] = useMemo(
     () =>
       value !== undefined
-        ? getDegreesMinutesSeconds(value, minutesDecimals, seconds)
+        ? mode === 'D'
+          ? [Math.abs(value), 0, 0]
+          : getDegreesMinutesSeconds(value, fractionDigits, mode === 'DMS')
         : [0, 0, 0],
-    [value, minutesDecimals, seconds]
+    [value, fractionDigits, mode]
   )
   const [coordinateDegrees, setCoordinateDegrees] = useState<string>(
-    value
-      ? formatNumber(degrees.toString(), type === 'lat' ? 2 : 3, 0, locale)
+    value !== undefined
+      ? formatNumber(
+          degrees.toString(),
+          type === 'lat' ? 2 : 3,
+          mode === 'D' ? fractionDigits : 0,
+          locale
+        )
       : ''
   )
   const [coordinateMinutes, setCoordinateMinutes] = useState<string>(
-    value
+    mode !== 'D' && value !== undefined
       ? formatNumber(
           minutes.toString(),
           2,
-          seconds ? 0 : minutesDecimals,
+          mode === 'DM' ? fractionDigits : 0,
           locale
         )
       : ''
   )
   const [coordinateSeconds, setCoordinateSeconds] = useState<string>(
-    seconds && value ? formatNumber(sec.toString(), 2, 0, locale) : ''
+    mode === 'DMS' && value !== undefined
+      ? formatNumber(sec.toString(), 2, 0, locale)
+      : ''
   )
   const [coordinateSign, setCoordinateSign] = useState<string>(
     value && value < 0
@@ -71,8 +80,8 @@ const DMSInput = forwardRef(function DMSInput(
         ? 'S'
         : 'W'
       : type === 'lat'
-      ? 'N'
-      : 'E'
+        ? 'N'
+        : 'E'
   )
 
   const degreesRef = useRef<HTMLInputElement>(null)
@@ -83,10 +92,10 @@ const DMSInput = forwardRef(function DMSInput(
   useEffect(() => {
     if (
       coordinateDegrees === '' &&
-      coordinateMinutes === '' &&
-      ((seconds && coordinateSeconds === '') || !seconds)
+      ((mode !== 'D' && coordinateMinutes === '') || mode === 'D') &&
+      ((mode === 'DMS' && coordinateSeconds === '') || mode !== 'DMS')
     ) {
-      if (onChange) onChange(undefined)
+      onChange?.(undefined)
     } else {
       const sign = coordinateSign === 'S' || coordinateSign === 'W' ? -1 : 1
       let newValue =
@@ -99,32 +108,30 @@ const DMSInput = forwardRef(function DMSInput(
 
       if (Math.abs(newValue) > maxAllowed) {
         newValue = sign * maxAllowed
-        const [newDeg, newMin, newSec] = getDegreesMinutesSeconds(
-          newValue,
-          minutesDecimals,
-          seconds
-        )
         setCoordinateDegrees(
-          formatNumber(newDeg.toString(), type === 'lat' ? 2 : 3, 0)
+          formatNumber(
+            Math.abs(newValue).toString(),
+            type === 'lat' ? 2 : 3,
+            mode === 'D' ? fractionDigits : 0
+          )
         )
-        setCoordinateMinutes(
-          formatNumber(newMin.toString(), 2, seconds ? 0 : minutesDecimals)
-        )
-        if (seconds) {
-          setCoordinateSeconds(formatNumber(newSec.toString(), 2, 0))
-        }
+        if (mode !== 'D')
+          setCoordinateMinutes(
+            formatNumber('0', 2, mode === 'DM' ? fractionDigits : 0)
+          )
+        if (mode === 'DMS') setCoordinateSeconds(formatNumber('0', 2, 0))
       }
 
-      if (onChange) onChange(newValue)
+      onChange?.(newValue)
     }
   }, [
     coordinateDegrees,
     coordinateMinutes,
     coordinateSeconds,
     coordinateSign,
-    minutesDecimals,
+    fractionDigits,
     onChange,
-    seconds,
+    mode,
     separator,
     type
   ])
@@ -133,60 +140,72 @@ const DMSInput = forwardRef(function DMSInput(
     const activeEl = document.activeElement
     const isEditing =
       activeEl === degreesRef.current ||
-      activeEl === minutesRef.current ||
-      (seconds && activeEl === secondsRef.current)
+      (mode !== 'D' && activeEl === minutesRef.current) ||
+      (mode === 'DMS' && activeEl === secondsRef.current)
 
     if (isEditing) return
     if (value !== undefined) {
-      const [deg, min, sec] = getDegreesMinutesSeconds(
-        value,
-        minutesDecimals,
-        seconds
-      )
+      const [deg, min, sec] =
+        mode === 'D'
+          ? [Math.abs(value), 0, 0]
+          : getDegreesMinutesSeconds(value, fractionDigits, mode === 'DMS')
       setCoordinateDegrees(
-        formatNumber(deg.toString(), type === 'lat' ? 2 : 3, 0, locale)
+        formatNumber(
+          deg.toString(),
+          type === 'lat' ? 2 : 3,
+          mode === 'D' ? fractionDigits : 0,
+          locale
+        )
       )
       setCoordinateMinutes(
-        formatNumber(min.toString(), 2, seconds ? 0 : minutesDecimals, locale)
+        formatNumber(
+          min.toString(),
+          2,
+          mode === 'DM' ? fractionDigits : 0,
+          locale
+        )
       )
       setCoordinateSeconds(formatNumber(sec.toString(), 2, 0, locale))
       setCoordinateSign(
         value < 0 ? (type === 'lat' ? 'S' : 'W') : type === 'lat' ? 'N' : 'E'
       )
     }
-  }, [value, type, minutesDecimals, seconds, locale])
+  }, [value, type, fractionDigits, mode, locale])
 
   return (
     <div className="DMSInput">
       <div className="input-wrapper degrees-wrapper">
         <NumberInput
           max={type === 'lat' ? 90 : 180}
-          decimals={0}
+          decimals={mode === 'D' ? fractionDigits : 0}
           value={coordinateDegrees}
           setValue={setCoordinateDegrees}
+          locale={locale}
           ref={ref || degreesRef}
-          nextFocus={minutesRef.current}
+          nextFocus={mode !== 'D' ? minutesRef.current : undefined}
         />
         <span>°</span>
       </div>
-      <div className="input-wrapper minutes-wrapper">
-        <NumberInput
-          value={coordinateMinutes}
-          max={seconds ? 59 : getMaxMinutes(minutesDecimals)}
-          decimals={seconds ? 0 : minutesDecimals}
-          setValue={setCoordinateMinutes}
-          locale={locale}
-          nextFocus={seconds ? secondsRef.current : signRef.current}
-          previousFocus={
-            ref && typeof ref === 'object' && 'current' in ref
-              ? ref.current
-              : degreesRef.current
-          }
-          ref={minutesRef}
-        />
-        <span>'</span>
-      </div>
-      {seconds && (
+      {mode !== 'D' && (
+        <div className="input-wrapper minutes-wrapper">
+          <NumberInput
+            value={coordinateMinutes}
+            max={mode === 'DMS' ? 59 : getMaxMinutes(fractionDigits)}
+            decimals={mode === 'DM' ? fractionDigits : 0}
+            setValue={setCoordinateMinutes}
+            locale={locale}
+            nextFocus={mode === 'DMS' ? secondsRef.current : signRef.current}
+            previousFocus={
+              ref && typeof ref === 'object' && 'current' in ref
+                ? ref.current
+                : degreesRef.current
+            }
+            ref={minutesRef}
+          />
+          <span>'</span>
+        </div>
+      )}
+      {mode === 'DMS' && (
         <div className="input-wrapper seconds-wrapper">
           <NumberInput
             value={coordinateSeconds}
@@ -200,13 +219,15 @@ const DMSInput = forwardRef(function DMSInput(
           <span>"</span>
         </div>
       )}
-      <SignInput
-        ref={signRef}
-        value={coordinateSign}
-        options={type === 'lat' ? ['N', 'S'] : ['E', 'W']}
-        setValue={setCoordinateSign}
-        nextFocus={nextFocus}
-      />
+      <div className="sign-input">
+        <SignInput
+          ref={signRef}
+          value={coordinateSign}
+          options={type === 'lat' ? ['N', 'S'] : ['E', 'W']}
+          setValue={setCoordinateSign}
+          nextFocus={nextFocus}
+        />
+      </div>
     </div>
   )
 })

@@ -1,8 +1,8 @@
 {
   "name": "react-dms-input",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
-  "homepage": "https://phalkone.github.io/react-dms-input/)",
+  "homepage": "https://phalkone.github.io/react-dms-input/",
   "repository": {
     "url": "git+https://github.com/phalkone/react-dms-input.git"
   },

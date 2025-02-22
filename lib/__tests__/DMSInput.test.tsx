@@ -12,8 +12,7 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={12.345}
-        seconds={false}
-        minutesDecimals={1}
+        fractionDigits={1}
         locale={locale}
         onChange={onChange}
       />
@@ -36,8 +35,8 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={12.345}
-        seconds={true}
-        minutesDecimals={1}
+        mode="DMS"
+        fractionDigits={1}
         locale={locale}
         onChange={onChange}
       />
@@ -57,8 +56,7 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={12.345}
-        seconds={false}
-        minutesDecimals={2}
+        fractionDigits={2}
         locale={locale}
         onChange={onChange}
       />
@@ -77,8 +75,7 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={12.345}
-        seconds={false}
-        minutesDecimals={1}
+        fractionDigits={1}
         locale={locale}
         onChange={onChange}
       />
@@ -99,8 +96,7 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={12.345}
-        seconds={false}
-        minutesDecimals={1}
+        fractionDigits={1}
         locale={locale}
         onChange={onChange}
       />
@@ -114,8 +110,7 @@ describe('DMSInput Component', () => {
       <DMSInput
         type="lat"
         value={45.0}
-        seconds={false}
-        minutesDecimals={1}
+        fractionDigits={1}
         locale={locale}
         onChange={onChange}
       />

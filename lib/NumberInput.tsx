@@ -14,7 +14,7 @@ export interface NumberInputProps
   setValue: React.Dispatch<React.SetStateAction<string>>
   min?: number
   max: number
-  decimals: 0 | 1 | 2 | 3
+  decimals: 0 | 1 | 2 | 3 | 4
   locale?: string
   nextFocus?: HTMLInputElement | HTMLSelectElement | null
   previousFocus?: HTMLInputElement | HTMLSelectElement | null
