@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { SignInput } from './SignInput'
 import { NumberInput } from './NumberInput'
-import './DMSInput.css'
+import styles from './DMSInput.module.css'
 import {
   formatNumber,
   getDecimalSeparator,
@@ -16,6 +16,15 @@ import {
   getMaxMinutes,
   sanitizeNumber
 } from './helper'
+
+export interface DMSInputClasses {
+  root?: string
+  inputWrapper?: string
+  degreesWrapper?: string
+  minutesWrapper?: string
+  secondsWrapper?: string
+  signInput?: string
+}
 
 export interface DMSInputProps {
   mode?: 'DMS' | 'DM' | 'D'
@@ -25,6 +34,8 @@ export interface DMSInputProps {
   value?: number
   onChange?: (val: number | undefined) => void
   nextFocus?: HTMLInputElement | HTMLSelectElement | null
+  classes?: DMSInputClasses
+  style?: React.CSSProperties
 }
 
 const DMSInput = forwardRef(function DMSInput(
@@ -35,7 +46,9 @@ const DMSInput = forwardRef(function DMSInput(
     fractionDigits = 1,
     locale,
     onChange,
-    nextFocus
+    nextFocus,
+    classes,
+    style
   }: DMSInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
@@ -173,8 +186,10 @@ const DMSInput = forwardRef(function DMSInput(
   }, [value, type, fractionDigits, mode, locale])
 
   return (
-    <div className="DMSInput">
-      <div className="input-wrapper degrees-wrapper">
+    <div className={`${styles.DMSInput} ${classes?.root || ''}`} style={style}>
+      <div
+        className={`${styles['input-wrapper']} ${styles['degrees-wrapper']} ${classes?.inputWrapper || ''} ${classes?.degreesWrapper || ''}`}
+      >
         <NumberInput
           max={type === 'lat' ? 90 : 180}
           decimals={mode === 'D' ? fractionDigits : 0}
@@ -187,7 +202,9 @@ const DMSInput = forwardRef(function DMSInput(
         <span>°</span>
       </div>
       {mode !== 'D' && (
-        <div className="input-wrapper minutes-wrapper">
+        <div
+          className={`${styles['input-wrapper']} ${styles['minutes-wrapper']} ${classes?.inputWrapper || ''} ${classes?.minutesWrapper || ''}`}
+        >
           <NumberInput
             value={coordinateMinutes}
             max={mode === 'DMS' ? 59 : getMaxMinutes(fractionDigits)}
@@ -206,7 +223,9 @@ const DMSInput = forwardRef(function DMSInput(
         </div>
       )}
       {mode === 'DMS' && (
-        <div className="input-wrapper seconds-wrapper">
+        <div
+          className={`${styles['input-wrapper']} ${styles['seconds-wrapper']} ${classes?.inputWrapper || ''} ${classes?.secondsWrapper || ''}`}
+        >
           <NumberInput
             value={coordinateSeconds}
             max={59}
@@ -219,7 +238,7 @@ const DMSInput = forwardRef(function DMSInput(
           <span>"</span>
         </div>
       )}
-      <div className="sign-input">
+      <div className={`${styles['sign-input']} ${classes?.signInput || ''}`}>
         <SignInput
           ref={signRef}
           value={coordinateSign}

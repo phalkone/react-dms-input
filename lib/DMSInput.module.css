@@ -1,0 +1,54 @@
+.DMSInput {
+    --border-color: #ccc;
+    --focus-border-color: #007bff;
+    --symbol-color: #666;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    gap: 3px;
+    padding-right: 3px;
+    margin-bottom: 10px;
+}
+
+.DMSInput .input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.DMSInput input,
+.DMSInput select {
+    height: 2rem;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    transition: background 0.2s ease-in-out;
+}
+
+.DMSInput input {
+    padding: 0.3rem 1rem;
+}
+
+.DMSInput .input-wrapper span {
+    font-size: 1rem;
+    color: var(--symbol-color);
+    margin-left: 2px;
+}
+
+.DMSInput select {
+    width: 4rem;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+.DMSInput select:focus,
+.DMSInput input:focus {
+    background-color: var(--focus-border-color);
+}
+
+.degrees-wrapper input {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}

@@ -48,6 +48,8 @@ function App() {
 | onnChange      | (val: number \| undefined) => void    |               | Called when the degrees value changes.                                               |
 | nextFocus      | HTMLInputElement \| HTMLSelectElement |               | UI element to focus on once the sign once the sign has been entered.                 |
 | ref            | React.RefObject                       |               | Reference to the input component                                                     |
+| classes        | DMSInputClasses                       |               | Custom css classes for all containers                                                |
+| style          | React.CSSProperties                   |               | Inline styles for the root container                                                 |
 
 ## Styling Reference
 
@@ -65,16 +67,16 @@ function App() {
     └── select (sign dropdown element)
 ```
 
-### Class Reference Table
+### DMSInputClasses
 
-| Class Name           | Location                     | Contains                                |
-| -------------------- | ---------------------------- | --------------------------------------- |
-| **.DMSInput**        | Root container               | All coordinate inputs and sign selector |
-| **.input-wrapper**   | Input group container        | Input field + measurement symbol        |
-| **.degrees-wrapper** | Degrees-specific container   | Degrees input + ° symbol                |
-| **.minutes-wrapper** | Minutes-specific container   | Minutes input + ' symbol                |
-| **.seconds-wrapper** | Seconds-specific container   | Seconds input + " symbol                |
-| **.sign-input**      | Cardinal direction container | N/S/E/W dropdown selector               |
+| Class Name         | Location                     | Contains                                |
+| ------------------ | ---------------------------- | --------------------------------------- |
+| **root**           | Root container               | All coordinate inputs and sign selector |
+| **inputWrapper**   | Input group container        | Input field + measurement symbol        |
+| **degreesWrapper** | Degrees-specific container   | Degrees input + ° symbol                |
+| **minutesWrapper** | Minutes-specific container   | Minutes input + ' symbol                |
+| **secondsWrapper** | Seconds-specific container   | Seconds input + " symbol                |
+| **signInput**      | Cardinal direction container | N/S/E/W dropdown selector               |
 
 ## License
 
