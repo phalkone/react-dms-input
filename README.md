@@ -78,6 +78,14 @@ function App() {
 | **secondsWrapper** | Seconds-specific container   | Seconds input + " symbol                |
 | **signInput**      | Cardinal direction container | N/S/E/W dropdown selector               |
 
+### CSS variables
+
+| Variable Name              | Default Value | Description                           |
+| -------------------------- | ------------- | ------------------------------------- |
+| **border-color**           | #ccc          | Border color for input fields         |
+| **focus-background-color** | #eef6ff       | Border color for focused input fields |
+| **symbol-color**           | #6c757d       | Color for measurement symbols         |
+
 ## License
 
 MIT

@@ -1,6 +1,6 @@
 .DMSInput {
     --border-color: #ccc;
-    --focus-border-color: #007bff;
+    --focus-background-color: #eef6ff;
     --symbol-color: #666;
     display: inline-flex;
     align-items: center;
@@ -45,7 +45,7 @@
 
 .DMSInput select:focus,
 .DMSInput input:focus {
-    background-color: var(--focus-border-color);
+    background-color: var(--focus-background-color);
 }
 
 .degrees-wrapper input {
